@@ -6,5 +6,5 @@ bp = Blueprint('bp', __name__)
 #first route
 @bp.route('/')
 def index():
-    return 'hello world'
+    return ''
 
