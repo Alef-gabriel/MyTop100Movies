@@ -6,11 +6,11 @@ from src.ma import MoviesSchema
 bp = Blueprint('bp', __name__)
 
 #first route
-@bp.route('/Movies', methods =['GET'])
+@bp.route('/my-Movies', methods =['GET'])
 def get_all():
     bs = MoviesSchema(many=True)
 
     movies = Movies.query.all()
 
     return bs.jsonify(movies)
-
+    
