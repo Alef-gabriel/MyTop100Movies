@@ -14,19 +14,21 @@ def get_all():
     #GET
     bs = MoviesSchema(many=True)
     movies = Movies.query.all()
-
     #POST
-    data = request.get_json()
+    if request.method == 'POST':
+        data = request.get_json()
 
-    search = tmdb.Search()
-    response = search.movie(query='The Bourne')
+        title = request.form['text']
 
-    if search:
-        new_movie = search.results(title=data['title'], release_date=data['release_date'],
-        popularity=data['popularity'])
-        db.session.add(new_movie)
-        db.session.commit()
-        return ''
+        search = tmdb.Search()
+        response = search.movie(query=title)
+
+        if search:
+            new_movie = search.results(title=data['title'], release_date=data['release_date'],
+            popularity=data['popularity'])
+            db.session.add(new_movie)
+            db.session.commit()
+
     #DELETE
     Movies.query.filter(Movies.id == id).delete()
     db.session.commit()
@@ -38,5 +40,5 @@ def get_all():
         return ''
     else:
         db.session.commit()
-        return ''
-    return render_template('myMovies.htm')
+
+    return render_template('myMovies.htm', movies=movies)

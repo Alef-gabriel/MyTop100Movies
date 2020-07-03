@@ -4,10 +4,24 @@
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Page Title</title>
-    <link rel='stylesheet' type='text/css' media='screen' href='myMovies.css'>
-    <script src='myMovies.js'></script>
+    <link rel='stylesheet' type='text/css' media='screen' href="{{url_for('static',filename='myMovies.css')}}">
+    <script src="{{url_for('static',filename='myMovies.js')}}"></script>
 </head>
 <body>
-    
+   <form action="/" method="POST">
+       <input type="text" class="input">
+   </form> 
+   <div>
+       <ul>
+           {% if movies %}
+                {% for movie in movies %}
+                    <li>{{ movie }}</li>
+                {% endfor %}
+       
+            {% else %}
+                <p>No polls are available.</p>
+            {% endif %}
+        </ul>
+   </div>
 </body>
 </html>
