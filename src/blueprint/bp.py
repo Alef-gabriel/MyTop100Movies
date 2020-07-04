@@ -10,35 +10,38 @@ bp = Blueprint('bp', __name__)
 
 #first route
 @bp.route('/', methods =['GET','POST'])
-def get_all():
-    #GET
-    bs = MoviesSchema(many=True)
-    movies = Movies.query.all()
+def post_movies():
     #POST
     if request.method == 'POST':
         data = request.get_json()
+        #title = request.form['text']
 
-        title = request.form['text']
-
-        search = tmdb.Search()
-        response = search.movie(query=title)
-
-        if search:
-            new_movie = search.results(title=data['title'], release_date=data['release_date'],
-            popularity=data['popularity'])
-            db.session.add(new_movie)
-            db.session.commit()
-
-    #DELETE
-    Movies.query.filter(Movies.id == id).delete()
-    db.session.commit()
-
-    #PUT
-    movies= Movies.query.filter(Movies.id == id)
-    movies.update(request.json)
-    if not movies:
-        return ''
-    else:
+        #search = tmdb.Search()
+        #response = search.movie(query=title)
+        new_movie = Movies(title=data['title'], release_date=data['release_date'],
+         popularity=data['popularity'])
+        db.session.add(new_movie)
         db.session.commit()
 
-    return render_template('myMovies.htm', movies=movies)
+    #DELETE
+    
+    #Movies.query.filter(Movies.id == id).delete()
+    #db.session.commit()
+
+    #PUT
+    #movies= Movies.query.filter(Movies.id == id)
+    #movies.update(request.json)
+    #if not movies:
+        #return ''
+    #else:
+        #db.session.commit()
+
+    return render_template('myMovies.htm')
+
+@bp.route('/Movies', methods =['GET'])
+def get_movies():
+    #GET
+    bs = MoviesSchema(many=True)
+    movies = Movies.query.all()
+
+    return bs.jsonify(movies)
