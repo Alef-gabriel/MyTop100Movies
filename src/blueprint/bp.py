@@ -12,21 +12,26 @@ bp = Blueprint('bp', __name__)
 @bp.route('/', methods =['GET','POST'])
 def post_movies():
     #POST
-    if request.method == 'POST':
-        data = request.get_json()
+    if  request.method == 'POST':
+        #data = request.get_json()
         #title = request.form['text']
+        tt = 'The Bourne'
+        search = tmdb.Search()
+        response = search.movie(query=tt)
 
-        #search = tmdb.Search()
-        #response = search.movie(query=title)
-        new_movie = Movies(title=data['title'], release_date=data['release_date'],
-         popularity=data['popularity'])
+        new_movie = Movies(title=search.results['title'], release_date=search.results['release_date'],
+         popularity=search.results['popularity'])
         db.session.add(new_movie)
         db.session.commit()
+    return render_template('myMovies.htm')
 
     #DELETE
-    
-    #Movies.query.filter(Movies.id == id).delete()
-    #db.session.commit()
+@bp.route('/del/<int:id>', methods =['DELETE'])
+def del_movies(id):
+    if request.method == 'DELETE':
+        Movies.query.filter(Movies.id == id).delete()
+        db.session.commit()
+    return ''
 
     #PUT
     #movies= Movies.query.filter(Movies.id == id)
@@ -36,9 +41,8 @@ def post_movies():
     #else:
         #db.session.commit()
 
-    return render_template('myMovies.htm')
 
-@bp.route('/Movies', methods =['GET'])
+@bp.route('/Movies',methods =['GET'])
 def get_movies():
     #GET
     bs = MoviesSchema(many=True)

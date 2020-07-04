@@ -11,8 +11,8 @@ def configure(app):
 class Movies(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80))
-    release_date = db.Column(db.Integer)
-    popularity = db.Column(db.Integer)
+    release_date = db.Column(db.String(80))
+    popularity = db.Column(db.String(120))
 
     def __repr__(self):
         return '<Movies %r>' % self.title
