@@ -15,14 +15,18 @@ def post_movies():
     if  request.method == 'POST':
         #data = request.get_json()
         #title = request.form['text']
-        tt = 'The Bourne'
-        search = tmdb.Search()
-        response = search.movie(query=tt)
+        """
+        def web_movie(title):
+            search = tmdb.Search()
+            response = search.movie(query=title)
+            return json.loads(search.results)
 
-        new_movie = Movies(title=search.results['title'], release_date=search.results['release_date'],
-         popularity=search.results['popularity'])
+        new_movie = Movies(title=web_movie['title'], release_date=web_movie['release_date'],
+                popularity=web_movie['popularity'])
+
         db.session.add(new_movie)
         db.session.commit()
+        """
     return render_template('myMovies.htm')
 
     #DELETE
