@@ -1,7 +1,8 @@
 import pytest
 import json
-
+import io
 import tmdbsimple as tmdb
+
 tmdb.API_KEY = '108c8c9eec3f15e22c2ad1db51a28436'
 
 def test_tmb():
@@ -25,12 +26,6 @@ def test_list():
 
     print(lista)
 
-def test_a():
-    t = 'The Bourne'
-
-    movie = tmdb.Movies(t)
-    response = movie.info()
-    movie.title
 
 def test_t():
     title = 'The Bourne'
@@ -50,14 +45,23 @@ def test_int():
     s = string(236)
     assert s == '236'
         
-def web_movie(title):
-    title = title
+
+def search(title):
+    """search movie
+    
+    Keyword arguments:
+    argument -- search for a movie title in an api of the movie
+    Return: returns a dump in json
+    """
     search = tmdb.Search()
     response = search.movie(query=title)
+    search_info = [str(x) for x in search.results]
+    return json.dumps(search_info)
+    
 
-    srr = search.results.decode('utf-8')
-        
-    return json.loads(srr)
 
 def test_movie():
-    web_movie('The Bourne')
+    y = search('The Bourne')
+    print(y)
+
+

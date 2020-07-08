@@ -13,23 +13,23 @@ bp = Blueprint('bp', __name__)
 def post_movies():
     #POST
     if  request.method == 'POST':
-        #data = request.get_json()
-        #title = request.form['text']
-        """
-        def web_movie(title):
+        def search(title):
             search = tmdb.Search()
             response = search.movie(query=title)
-            return json.loads(search.results)
+            search_info = [str(x) for x in search.results]
+            return json.dumps(search_info)
 
-        new_movie = Movies(title=web_movie['title'], release_date=web_movie['release_date'],
-                popularity=web_movie['popularity'])
+        def add_movie():
+            data = request.get_json()
+            m = search(request.form['movie'])
+            new_user = Movies(title=m.title,
+             release_date=m.release_date,popularity=m.popularity)
+            db.session.add(new_user)
+            db.session.commit()
 
-        db.session.add(new_movie)
-        db.session.commit()
-        """
     return render_template('myMovies.htm')
 
-    #DELETE
+ #DELETE
 @bp.route('/del/<int:id>', methods =['DELETE'])
 def del_movies(id):
     if request.method == 'DELETE':
