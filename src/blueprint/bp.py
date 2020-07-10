@@ -19,13 +19,13 @@ def post_movies():
             search_info = [str(x) for x in search.results]
             return json.dumps(search_info)
 
-        def add_movie():
-            data = request.get_json()
-            m = search(request.form['movie'])
-            new_user = Movies(title=m.title,
-             release_date=m.release_date,popularity=m.popularity)
-            db.session.add(new_user)
-            db.session.commit()
+        data = request.get_json()
+        #t = request.form['movie']
+        m = search('The Bourne')
+        new_user = Movies(title=m['title'],
+         release_date=m['release_date'],popularity=m['popularity'])
+        db.session.add(new_user)
+        db.session.commit()
 
     return render_template('myMovies.htm')
 
