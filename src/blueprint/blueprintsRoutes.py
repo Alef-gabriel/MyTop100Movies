@@ -1,15 +1,12 @@
 from flask import Blueprint, json, jsonify, request, render_template
-from src.models.mod import db , Movies
-from src.ma import MoviesSchema
+from src.models.modelsSqlalchemy import database , Movies
+from src.serializing.marshmallowSqlalchemy import MoviesSchema
 import tmdbsimple as tmdb
 
-#key of api
 tmdb.API_KEY = '108c8c9eec3f15e22c2ad1db51a28436'
-#Create blueprint
-bp = Blueprint('bp', __name__)
+blueprintRote = Blueprint('blueprintRote', __name__)
 
-#first route
-@bp.route('/', methods =['GET','POST'])
+@blueprintRote.route('/', methods =['GET','POST'])
 def post_movies():
     #POST
     if  request.method == 'POST':
@@ -23,18 +20,17 @@ def post_movies():
         #t = request.form['movie']
         m = search('The Bourne')
         new_user = Movies(title=m['title'],
-         release_date=m['release_date'],popularity=m['popularity'])
-        db.session.add(new_user)
-        db.session.commit()
+         release_date=str(m['release_date']),popularity=str(m['popularity']))
+        database.session.add(new_user)
+        database.session.commit()
 
     return render_template('myMovies.htm')
 
- #DELETE
-@bp.route('/del/<int:id>', methods =['DELETE'])
+@blueprintRote.route('/del/<int:id>', methods =['DELETE'])
 def del_movies(id):
     if request.method == 'DELETE':
         Movies.query.filter(Movies.id == id).delete()
-        db.session.commit()
+        database.session.commit()
     return ''
 
     #PUT
@@ -46,7 +42,7 @@ def del_movies(id):
         #db.session.commit()
 
 
-@bp.route('/Movies',methods =['GET'])
+@blueprintRote.route('/Movies',methods =['GET'])
 def get_movies():
     #GET
     bs = MoviesSchema(many=True)
