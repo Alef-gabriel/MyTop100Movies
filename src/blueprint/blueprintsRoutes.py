@@ -1,6 +1,5 @@
 from flask import Blueprint, json, jsonify, request, render_template
-from src.models.modelsSqlalchemy import database , Movies
-from src.serializing.marshmallowSqlalchemy import MoviesSchema
+from src.models.modelsSqlalchemy import db , Movies
 import tmdbsimple as tmdb
 
 tmdb.API_KEY = '108c8c9eec3f15e22c2ad1db51a28436'
@@ -13,16 +12,21 @@ def post_movies():
         def search(title):
             search = tmdb.Search()
             response = search.movie(query=title)
-            search_info = [str(x) for x in search.results]
-            return json.dumps(search_info)
+            record = []
 
-        data = request.get_json()
-        #t = request.form['movie']
+            for info in search.results:
+                record.append(info['title'])
+                record.append(info['release_date'])
+                record.append(info['popularity'])
+            return record
+
         m = search('The Bourne')
-        new_user = Movies(title=m['title'],
-         release_date=str(m['release_date']),popularity=str(m['popularity']))
-        database.session.add(new_user)
-        database.session.commit()
+        
+        newMovie = Movies(title=m[0],
+         release_date=m[1],popularity=m[2])
+
+        db.session.add(newMovie)
+        db.session.commit()
 
     return render_template('myMovies.htm')
 
@@ -30,7 +34,7 @@ def post_movies():
 def del_movies(id):
     if request.method == 'DELETE':
         Movies.query.filter(Movies.id == id).delete()
-        database.session.commit()
+        db.session.commit()
     return ''
 
     #PUT
@@ -45,7 +49,6 @@ def del_movies(id):
 @blueprintRote.route('/Movies',methods =['GET'])
 def get_movies():
     #GET
-    bs = MoviesSchema(many=True)
     movies = Movies.query.all()
 
-    return bs.jsonify(movies)
+    return jsonify(movies)

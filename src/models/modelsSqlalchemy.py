@@ -1,16 +1,16 @@
 from flask_sqlalchemy import SQLAlchemy
 
-database = SQLAlchemy()
+db = SQLAlchemy()
 
 def SqlalchemyConfigureDatabase(app):
-    database.init_app(app)
-    app.database = database
+    db.init_app(app)
+    app.db = db
 
-class Movies(database.Model):
-    id = database.Column(database.Integer, primary_key=True)
-    title = database.Column(database.String(80))
-    release_date = database.Column(database.String(80))
-    popularity = database.Column(database.String(120))
+class Movies(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(80))
+    release_date = db.Column(db.String(80))
+    popularity = db.Column(db.String(120))
 
     def __repr__(self):
         return '<Movies %r>' % self.title

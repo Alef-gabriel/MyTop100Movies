@@ -4,7 +4,6 @@ import io
 import tmdbsimple as tmdb
 
 tmdb.API_KEY = '108c8c9eec3f15e22c2ad1db51a28436'
-
 def test_tmb():
     movie = tmdb.Movies(603)
     response = movie.info()
@@ -32,10 +31,6 @@ def test_t():
     search = tmdb.Search()
     response = search.movie(query=title)
 
-def search(title):
-    title = title
-    search = tmdb.Search()
-    response = search.movie(query=title)
 
 def string(i):
     i = str(i)
@@ -55,13 +50,18 @@ def search(title):
     """
     search = tmdb.Search()
     response = search.movie(query=title)
-    search_info = [str(x) for x in search.results]
-    return json.dumps(search_info)
+    query = []
+    for info in search.results:
+        query.append(info['title'])
+        query.append(info['release_date'])
+        query.append(info['popularity'])
+    return query
     
 
 
 def test_movie():
-    y = search('The Bourne')
-    print(y)
+    result = search('The Bourne')
+    tittle = result[0]
+    print(tittle)
 
 
