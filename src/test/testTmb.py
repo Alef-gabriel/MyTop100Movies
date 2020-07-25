@@ -42,26 +42,25 @@ def test_int():
         
 
 def search(title):
-    """search movie
-    
-    Keyword arguments:
-    argument -- search for a movie title in an api of the movie
-    Return: returns a dump in json
-    """
     search = tmdb.Search()
     response = search.movie(query=title)
-    query = []
+    record = []
     for info in search.results:
-        query.append(info['title'])
-        query.append(info['release_date'])
-        query.append(info['popularity'])
-    return query
+        record.append(info['title'])
+        record.append(info['release_date'])
+        record.append(info['popularity'])
+    return record
     
 
 
 def test_movie():
-    result = search('The Bourne')
-    tittle = result[0]
-    print(tittle)
+    try:      
+        result = search('ggigiuiug')
+        tittle = result[0]
+        assert print(tittle)
+
+    except Exception as exceptError:
+        if exceptError != None
+            assert print(f'Error: {exceptError}')
 
 

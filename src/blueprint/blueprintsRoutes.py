@@ -7,35 +7,36 @@ blueprintRote = Blueprint('blueprintRote', __name__)
 
 @blueprintRote.route('/', methods =['GET','POST'])
 def post_movies():
-    #POST
     if  request.method == 'POST':
         def search(title):
             search = tmdb.Search()
             response = search.movie(query=title)
             record = []
-
             for info in search.results:
                 record.append(info['title'])
                 record.append(info['release_date'])
                 record.append(info['popularity'])
             return record
 
-        m = search('The Bourne')
-        
-        newMovie = Movies(title=m[0],
-         release_date=m[1],popularity=m[2])
+        try:
+            movieTitle = search('The Bourne')
+            queryMovie = Movies(title=movieTitle[0],
+            release_date=movieTitle[1],popularity=movieTitle[2])
 
-        db.session.add(newMovie)
-        db.session.commit()
+            db.session.add(queryMovie)
+            db.session.commit()
+
+        except Exception as exceptError:
+            if exceptError != None:
+                print(f'Error: {exceptError}')
 
     return render_template('myMovies.htm')
 
 @blueprintRote.route('/del/<int:id>', methods =['DELETE'])
 def del_movies(id):
-    if request.method == 'DELETE':
-        Movies.query.filter(Movies.id == id).delete()
-        db.session.commit()
-    return ''
+    Movies.query.filter(Movies.id == id).delete()
+    db.session.commit()
+    return 'MOVIE DELETED'
 
     #PUT
     #movies= Movies.query.filter(Movies.id == id)
