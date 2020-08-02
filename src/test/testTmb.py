@@ -59,8 +59,6 @@ def test_movie():
         tittle = result[0]
         assert print(tittle)
 
-    except Exception as exceptError:
-        if exceptError != None
-            assert print(f'Error: {exceptError}')
+    
 
 

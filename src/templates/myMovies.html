@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Add-MyMovies</title>
+  <link rel="stylesheet" type="css" href="{{url_for('static',filename='stylesheet/style.css')}}">
+</head>
+<body>
+  <form action="/" method="POST">
+    <input type="text" class="movie" id="movie">
+    <button name="submit" id="submit">GO</button>
+  </form> 
+  <div>
+    <ul>
+      <li>
+          <a href="http://localhost/Movies">To see my movies</a>
+      </li>
+    </ul>
+  </div>
+  <script src="{{url_for('static', filename='scripts/myMovies.js')}}"></script>
+</body>
+</html>

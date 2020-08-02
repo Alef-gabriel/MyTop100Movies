@@ -1,5 +1,6 @@
 from flask import Blueprint, json, jsonify, request, render_template
 from src.models.modelsSqlalchemy import db , Movies
+from src.serializing.marshmallowMovie import  MoviesSchema
 import tmdbsimple as tmdb
 
 tmdb.API_KEY = '108c8c9eec3f15e22c2ad1db51a28436'
@@ -30,7 +31,7 @@ def post_movies():
             if exceptError != None:
                 print(f'Error: {exceptError}')
 
-    return render_template('myMovies.htm')
+    return render_template('myMovies.html')
 
 @blueprintRote.route('/del/<int:id>', methods =['DELETE'])
 def del_movies(id):
@@ -49,7 +50,7 @@ def del_movies(id):
 
 @blueprintRote.route('/Movies',methods =['GET'])
 def get_movies():
-    #GET
-    movies = Movies.query.all()
+    ms = MoviesSchema(many=True)
+    Mymovies = Movies.query.all()
 
-    return jsonify(movies)
+    return ms.jsonify(Mymovies)

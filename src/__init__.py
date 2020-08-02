@@ -1,6 +1,7 @@
 from flask import Flask
 from src.models.modelsSqlalchemy import SqlalchemyConfigureDatabase
 from src.blueprint.blueprintsRoutes import blueprintRote
+from src.serializing.marshmallowMovie import marshmallowConfigure
 from flask_migrate import Migrate
 
 def create_app():
@@ -10,6 +11,7 @@ def create_app():
     app.config['SQLALCHEMY_ECHO'] = True
 
     SqlalchemyConfigureDatabase(app)
+    marshmallowConfigure(app)
     Migrate(app,app.db)
 
     app.register_blueprint(blueprintRote)   
