@@ -8,3 +8,5 @@
 #
 #
 # https://flask.palletsprojects.com/en/1.1.x/
+# https://docs.pytest.org/en/latest/
+## add Method put and implement css, js
